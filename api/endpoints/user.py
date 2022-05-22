@@ -179,22 +179,22 @@ async def user_info(req: Request):
     return success(msg="用户信息", data=user_data.__dict__)
 
 
-@router.post("/account/login", response_model=user.UserLogin, summary="用户登陆")
+@router.post("/login", response_model=user.UserLogin, summary="用户登陆")
 async def account_login(post: user.AccountLogin):
     """
     用户登陆
     :param post:
     :return: jwt token
     """
-    get_user = await User.get_or_none(username=post.username)
+    get_user = await User.get_or_none(username=post.account)
     if not get_user:
-        return fail(msg=f"用户{post.username}密码验证失败!")
+        return fail(msg=f"用户{post.account}密码验证失败!")
     if not get_user.password:
-        return fail(msg=f"用户{post.username}密码验证失败!")
+        return fail(msg=f"用户{post.account}密码验证失败!")
     if not check_password(post.password, get_user.password):
-        return fail(msg=f"用户{post.username}密码验证失败!")
+        return fail(msg=f"用户{post.account}密码验证失败!")
     if not get_user.user_status:
-        return fail(msg=f"用户{post.username}已被管理员禁用!")
+        return fail(msg=f"用户{post.account}已被管理员禁用!")
     jwt_data = {
         "user_id": get_user.pk,
         "user_type": get_user.user_type

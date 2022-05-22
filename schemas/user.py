@@ -34,7 +34,7 @@ class SetRole(BaseModel):
 
 
 class AccountLogin(BaseModel):
-    username: str = Field(min_length=3, max_length=10)
+    account: str = Field(min_length=3, max_length=10)
     password: str = Field(min_length=6, max_length=12)
 
 
